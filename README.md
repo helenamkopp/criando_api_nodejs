@@ -8,4 +8,4 @@ localhost:3001 (no chrome)
 
 npm install -D nodemon 
 
-npm run dev (nome do script que foi criado no package.json)
+npm run dev (nome do script que foi criado nclo package.json)
