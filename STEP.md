@@ -461,3 +461,69 @@ Em routes.js
 
 No insomnia: duplicar a rota update, chamar de delete, colocar DEL, trocar o JSON para no body  e colocar send.. ir em index e conferir se esta deletado, assim como no robo3t
 
+### Adicionando paginação para a listagem de produtos
+
+- Vou até o Insomnia, em create, crio vários objetos (send várias vezes), vou até o index, aperto send e vejo que os objetos novos foram criados. 
+- Para confirmar, abro o robo3t e vejo a lista com todos os objetos criados agora.
+- Não se tornar viável quando se tem muitos registros
+- Para isso vou instalar um método com o seguinte comando:
+
+- npm install mongoose-paginate
+- depois de instalar
+- vou na pasta models, dentro do Product.js e vou importar essa biblioteca, utilizando a linha:
+
+
+    const mongoosePaginate = require('mongoose-paginate');
+
+e logo após criar o schema vou colocar a seguinte linha:
+
+    ProductSchema.plugin(mongoosePaginate)
+
+Depois disso, dentro de ProductController.js atualizar o index.. 
+
+era:
+
+    async index(req, res) {
+            const products = await Product.find();
+
+            return res.json(products);
+        }, 
+
+agora é: 
+
+    async index(req, res) {
+            const { page = 1} = req.query;
+            const products = await Product.paginate({}, { page, limit: 10});
+
+            return res.json(products);
+        }
+
+ir no insomnia e testar 
+{{ base_url  }}/products?page=2
+
+
+### Adicionando cors
+- permitir que outros endereços acessem a nossa API
+- por enquanto a gente só consegue acessar a API utilizando o insomnia
+
+para isso, com o comando 
+ npm install cors
+
+depois de instalado, eu vou no meu server.js, importo o cors com a linha de código.
+
+    const cors = require('cors');
+
+atualizar o iniciando o app//
+
+ficará 
+
+        // Iniciando o app
+    const app = express();
+    app.use(express.json());
+    app.use(cors());
+
+
+
+
+
+
